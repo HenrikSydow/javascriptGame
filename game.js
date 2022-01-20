@@ -24,8 +24,6 @@ function init() {
 
     gameObjects.push(player);
 
-    texts.push(new GameText("test", 500, 500, 50, "#FF932F", 1500));
-
     enemySpawner = new EnemySpawner(1);
 
     window.requestAnimationFrame(gameloop);
@@ -628,6 +626,8 @@ class Player extends GameObject{
         this.damage += 1;
         this.maxHp += 5;
         this.hp += 5;
+        if (this.bulletCooldown >= 300);
+            this.bulletCooldown -= 10;
         if (this.lvl % 10 == 0)
             this.velX = this.velY = this.velX + 1;
         texts.push(new GameText("Level up!", this.x, this.y, 20, "#e3f238", 1500));
