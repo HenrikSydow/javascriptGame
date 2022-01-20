@@ -653,16 +653,20 @@ class Player extends GameObject{
             }
         });
 
-        if (keys.includes("w")) {
+        const lower = keys.map(element => {
+            return element.toLowerCase();
+        });
+
+        if (lower.includes("w")) {
             this.y -= this.velY;
         }
-        if (keys.includes("a")) {
+        if (lower.includes("a")) {
             this.x -= this.velX;
         }
-        if (keys.includes("s")) {
+        if (lower.includes("s")) {
             this.y += this.velY;
         }
-        if (keys.includes("d")) {
+        if (lower.includes("d")) {
             this.x += this.velX;
         }
         
