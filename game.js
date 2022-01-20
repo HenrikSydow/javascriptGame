@@ -214,13 +214,20 @@ class HpBar extends GameObject {
         this.hp = 0;
         this.exp = 0;
         this.hpColor = "#FF0000";
+        this.width = 100;
+        this.height = 20;
     }
 
     draw() {
         super.draw();
+        // outline:
+        ctx.fillStyle = "#2e2d2c";
+        ctx.fillRect(this.x - 5, this.y - 5, this.width + 10, this.height + 10);
         ctx.fillStyle = this.hpColor;
-        ctx.fillRect(this.x, this.y, (this.hp / player.maxHp) * 100, 20);
+        // hp:
+        ctx.fillRect(this.x, this.y, (this.hp / player.maxHp) * this.width, this.height);
         ctx.fillStyle = "#62d0f3";
+        // exp:
         ctx.fillRect(this.x, this.y + 20, player.width * (this.exp / player.nextLvlExp), 8);
     }
 }
@@ -669,6 +676,17 @@ class Player extends GameObject{
         if (lower.includes("d")) {
             this.x += this.velX;
         }
+
+        // avoid going out of bounds:
+        if (this.x < 0)
+            this.x = 0;
+        else if (this.x > canvas.width - this.width)
+            this.x = canvas.width - this.width;
+
+        if (this.y < 0)
+            this.y = 0;
+        else if (this.y > canvas.height - this.height)
+            this.y = canvas.height - this.height;
         
         this.shoot();
 
