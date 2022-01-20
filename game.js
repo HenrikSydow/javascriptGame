@@ -219,7 +219,7 @@ class HpBar extends GameObject {
     draw() {
         super.draw();
         ctx.fillStyle = this.hpColor;
-        ctx.fillRect(this.x, this.y, this.hp, 20);
+        ctx.fillRect(this.x, this.y, (this.hp / player.maxHp) * 100, 20);
         ctx.fillStyle = "#62d0f3";
         ctx.fillRect(this.x, this.y + 20, player.width * (this.exp / player.nextLvlExp), 8);
     }
