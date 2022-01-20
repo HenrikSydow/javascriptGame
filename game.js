@@ -24,7 +24,7 @@ function init() {
 
     gameObjects.push(player);
 
-    enemySpawner = new EnemySpawner(1);
+    enemySpawner = new EnemySpawner();
 
     window.requestAnimationFrame(gameloop);
 }
@@ -55,7 +55,6 @@ function gameloop(timeStamp) {
     ctx.font = '25px Arial';
     ctx.fillStyle = 'white';
     ctx.fillText("FPS: " + fps, 10, 30);
-    ctx.fillText("Level: " + enemySpawner.level, canvas.width - 200, 30);
 
     window.requestAnimationFrame(gameloop);
 }
@@ -82,10 +81,10 @@ function getRandomInt(min, max) {
 }
 
 class EnemySpawner {
-    constructor(level) {
+    constructor() {
         this.frequency = 3000;
         this.lastSpawn = 0;
-        this.level = level;
+        this.level = 0;
 
         this.levels = [
             // level 0:
@@ -156,8 +155,10 @@ class EnemySpawner {
             }
         }
         
-        if (!this.areEnemiesLeft() && currentLevel.length == 0)
+        if (!this.areEnemiesLeft() && currentLevel.length == 0) {
             this.level += 1;
+            texts.push(new GameText("Level " + this.level, canvas.width / 2 - canvas.width / 17, canvas.height / 5, 75, "#FFFFFF", 2000));
+        }
     }
 }
 
@@ -644,7 +645,7 @@ class Player extends GameObject{
         gameObjects = [];
         let newPlayer = new Player(canvas.width / 2 - this.width / 2, canvas.height / 2 - this.height / 2, this.hpBar);
         gameObjects.push(newPlayer);
-        enemySpawner = new EnemySpawner(0);
+        enemySpawner = new EnemySpawner();
         player = newPlayer;
     }
 
