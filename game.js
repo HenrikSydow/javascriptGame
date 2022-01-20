@@ -31,12 +31,12 @@ function init() {
 
 function keyDownHandler(event) {
     event.preventDefault();
-    if (!keys.includes(event.key.toLowerCase()))
-        keys.push(event.key.toLowerCase());
+    if (!keys.includes(event.key))
+        keys.push(event.key);
 }
 
 function keyUpHandler(event) {
-    let keyIndex = keys.indexOf(event.key.toLowerCase());
+    let keyIndex = keys.indexOf(event.key);
     keys.splice(keyIndex, 1);
 }
 
