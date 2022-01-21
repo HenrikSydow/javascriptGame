@@ -301,6 +301,29 @@ class Health extends GameObject {
 
 }
 
+class Rapidfire extends GameObject {
+    constructor(x, y) {
+        super(x, y);
+        this.width = this.height = 40;
+        this.hitbox = new Hitbox(this.x, this.y, this.width, this.height);
+        this.fireRate = 250;
+    }
+
+    update() {
+        if (this.hitbox.intersects(player.hitbox)) {
+            if(player.bulletCooldown > 250)
+                player.bulletCooldown = this.fireRate;
+            gameObjects.splice(gameObjects.indexOf(this), 1);
+        }
+    }
+
+    draw() {   
+        ctx.fillStyle = "#fc0ae4";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+}
+
 class Enemy extends GameObject {
     constructor(x, y, width, height) {
         super(x, y);
@@ -325,9 +348,15 @@ class Enemy extends GameObject {
 	}
 
     spawnHealthRandom() {
-        let randInt = getRandomInt(0, 21);
-        if (randInt == 10)
+        let randInt = getRandomInt(0, 11);
+        if (randInt == 5)
             gameObjects.push(new Health(this.x, this.y));
+    }
+
+    spawnRapidFireRandom() {
+        let randInt = getRandomInt(0, 11);
+        if (randInt == 5)
+            gameObjects.push(new Rapidfire(this.x, this.y));
     }
 	
 	updateHitbox() {
@@ -363,6 +392,7 @@ class Enemy extends GameObject {
     die() {
         this.dropExp();
         this.spawnHealthRandom();
+        this.spawnRapidFireRandom();
         this.explode();
         gameObjects.splice(gameObjects.indexOf(this), 1);
     }
@@ -627,7 +657,8 @@ class Player extends GameObject{
         super(x, y);
         this.velX = this.velY = 4;
 		this.bulletVel = 10;
-		this.bulletCooldown = 750;
+        this.bulletCooldown = 750;
+        this. basicCooldown = 750;
         this.hpBar = hpBar;
         this.hpBar.hpColor = "#078709";
         this.maxHp = 100;
@@ -696,6 +727,7 @@ class Player extends GameObject{
                 if (gameObject.hitbox.intersects(this.hitbox)) {
                     if(this.hp > 0)
                         this.hp -= 1;
+                        this.bulletCooldown = this.basicCooldown - this.lvl * 10;
                 }
             }
         });
@@ -757,5 +789,6 @@ class Player extends GameObject{
         ctx.font = '14px Arial';
         ctx.fillText("Dmg: " + this.damage, this.x + 10, this.y + 55);
         ctx.fillText("Spd: " + this.velX, this.x + 10, this.y + 70);
+        ctx.fillText("CD: " + this.bulletCooldown, this.x + 10, this.y + 95);
     }
 }
