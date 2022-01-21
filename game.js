@@ -217,16 +217,17 @@ class HpBar extends GameObject {
         this.hpColor = "#FF0000";
         this.width = 100;
         this.height = 20;
+        this.maxHp = 0;
     }
 
     draw() {
         super.draw();
         // outline:
         ctx.fillStyle = "#2e2d2c";
-        ctx.fillRect(this.x - 5, this.y - 5, this.width + 10, this.height + 10);
+        ctx.fillRect(this.x - 5, this.y - 10, this.width + 10, this.height + 10);
         ctx.fillStyle = this.hpColor;
         // hp:
-        ctx.fillRect(this.x, this.y, (this.hp / player.maxHp) * this.width, this.height);
+        ctx.fillRect(this.x, this.y - 5, (this.hp / this.maxHp) * this.width, this.height);
         ctx.fillStyle = "#62d0f3";
         // exp:
         ctx.fillRect(this.x, this.y + 20, player.width * (this.exp / player.nextLvlExp), 8);
@@ -362,6 +363,9 @@ class BasicEnemy extends Enemy {
         super(x, y, 100, 100);
         this.velX = this.velY = 2;
         this.hp = 20;
+        this.maxHp = 20;
+        this.hpBar.maxHp = this.maxHp;
+        this.hpBar.width = 100;
     }
 
     move() {
@@ -388,6 +392,9 @@ class BouncingEnemy extends Enemy {
 		this.velX = this.velY = 9;
         this.hp = 10;
         this.expWorth = 7;
+        this.maxHp = 10;
+        this.hpBar.maxHp = this.maxHp;
+        this.hpBar.width = 40;
 	}
 	
 	update() {
@@ -423,6 +430,9 @@ class BigBouncingEnemy extends BouncingEnemy {
         this.hp = 250;
         this.expWorth = 15;
         this.velX = this.velY = 15;
+        this.maxHp = 250;
+        this.hpBar.maxHp = this.maxHp;
+        this.hpBar.width = 200;
     }
 
     explode() {
@@ -587,12 +597,12 @@ class Player extends GameObject{
         this.hpBar = hpBar;
         this.hpBar.hpColor = "#00FF00";
         this.maxHp = 100;
+        this.hpBar.width = 100;
         this.hp = 100;
         this.damage = 1;
         this.lvl = 1;
         this.exp = 0;
         this.nextLvlExp = 10;
-        this.hpBar.hp = this.hp;
         this.width = 100;
         this.height = 100;
         this.hitbox = new Hitbox(this.x, this.y, this.width, this.height);
@@ -695,6 +705,7 @@ class Player extends GameObject{
         this.hpBar.y = this.y - 30;
         this.hpBar.hp = this.hp;
         this.hpBar.exp = this.exp;
+        this.hpBar.maxHp = this.maxHp;
 
         this.hitbox.x = this.x;
         this.hitbox.y = this.y;
