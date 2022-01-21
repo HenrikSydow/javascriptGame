@@ -19,7 +19,7 @@ function init() {
     window.addEventListener("keyup", keyUpHandler);
 
     let playerX = canvas.width / 2 - 50, playerY = canvas.height / 2 - 50;
-    let hpBar = new HpBar(100);
+    let hpBar = new HpBar();
     player = new Player(playerX, playerY, hpBar);
 
     gameObjects.push(player);
