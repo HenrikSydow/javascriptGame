@@ -8,7 +8,6 @@ var gameObjects = [];
 var texts = [];
 var player;
 var enemySpawner;
-var mousePressed = false;
 
 function init() {
     canvas =  document.getElementById("gameCanvas");
@@ -41,27 +40,9 @@ function keyUpHandler(event) {
     keys.splice(keyIndex, 1);
 }
 
-document.onmousedown = function(e) {
-    mousePressed = true;
-};
-
-document.onmouseup = function(e) {
-    mousePressed = false;
-};
-
 let secondsPassed;
 let oldTimeStamp;
 let fps;
-let mouse_pos_x;
-let mouse_pos_y;
-
-function mouse_position(e)
-{
-    mouse_pos_x = e.screenX;
-    mouse_pos_y = e.screenY - 72;
-}
-
-
 function gameloop(timeStamp) {
     update();
     draw();
@@ -165,6 +146,12 @@ class EnemySpawner {
             if (Date.now() - this.lastSpawn >= this.frequency) {
                 let newX = getRandomInt(1, canvas.width - 100);
                 let newY = getRandomInt(1, canvas.height - 100);
+
+                if(newX <= player.playerX || newX >= player.playerX)
+                {
+                    console.log("GOOD SPAWN");
+                }
+
                 let enemyIndex = getRandomInt(0, currentLevel.length);
                 let newEnemy = new currentLevel[enemyIndex][1](newX, newY);
                 currentLevel[enemyIndex][0] -= 1;
@@ -250,6 +237,9 @@ class HpBar extends GameObject {
         ctx.fillStyle = "#62d0f3";
         // exp:
         ctx.fillRect(this.x, this.y + 20, player.width * (this.exp / player.nextLvlExp), 8);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = 'Bold 14px Arial';
+        ctx.fillText("Hp: " + this.hp + "/" + this.maxHp, this.x, this.y + this.height / 2);
     }
 }
 
@@ -614,7 +604,7 @@ class Player extends GameObject{
 		this.bulletVel = 10;
 		this.bulletCooldown = 750;
         this.hpBar = hpBar;
-        this.hpBar.hpColor = "#00FF00";
+        this.hpBar.hpColor = "#067524";
         this.maxHp = 100;
         this.hpBar.width = 100;
         this.hp = 100;
@@ -636,11 +626,17 @@ class Player extends GameObject{
             let bulletVelX = 0;
             let bulletVelY = 0;
 
-            if (mousePressed) {
-                var rotation = Math.atan2(player.y + player.height / 2 - mouse_pos_y, player.x + player.width / 2 - mouse_pos_x);
-
-                bulletVelX -= Math.cos(rotation) * this.bulletVel;
-                bulletVelY -= Math.sin(rotation) * this.bulletVel;
+            if (keys.includes("ArrowUp")) {
+                bulletVelY = -this.bulletVel;
+            }
+            if (keys.includes("ArrowDown")) {
+                bulletVelY = this.bulletVel;
+            }
+            if (keys.includes("ArrowLeft")) {
+                bulletVelX = -this.bulletVel;
+            }
+            if (keys.includes("ArrowRight")) {
+                bulletVelX = this.bulletVel;
             }
 
             if (bulletVelX != 0 || bulletVelY != 0) {
@@ -741,6 +737,5 @@ class Player extends GameObject{
         ctx.font = '14px Arial';
         ctx.fillText("Dmg: " + this.damage, this.x + 10, this.y + 55);
         ctx.fillText("Spd: " + this.velX, this.x + 10, this.y + 70);
-        ctx.fillText("Hp: " + this.hp + "/" + this.maxHp, this.x + 10, this.y + 85);
     }
 }
