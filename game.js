@@ -306,13 +306,13 @@ class Rapidfire extends GameObject {
         super(x, y);
         this.width = this.height = 40;
         this.hitbox = new Hitbox(this.x, this.y, this.width, this.height);
-        this.fireRate = 250;
+        this.fireRateIncrease = 100;
     }
 
     update() {
         if (this.hitbox.intersects(player.hitbox)) {
-            if(player.bulletCooldown > 250)
-                player.bulletCooldown = this.fireRate;
+            if(player.bulletCooldown >= player.minimumBulletCooldown + this.fireRateIncrease)
+                player.bulletCooldown -= this.fireRateIncrease;
             gameObjects.splice(gameObjects.indexOf(this), 1);
         }
     }
@@ -704,7 +704,8 @@ class Player extends GameObject{
         this.damage += 1;
         this.maxHp += 5;
         this.hp += 5;
-        if (this.bulletCooldown >= 300);
+        this.minimumBulletCooldown = 200;
+        if (this.bulletCooldown >= this.minimumBulletCooldown + 10);
             this.bulletCooldown -= 10;
         if (this.lvl % 10 == 0)
             this.velX = this.velY = this.velX + 1;
