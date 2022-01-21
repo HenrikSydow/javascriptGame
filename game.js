@@ -637,7 +637,7 @@ class Player extends GameObject{
             let bulletVelY = 0;
 
             if (mousePressed) {
-                var rotation = Math.atan2(player.y - mouse_pos_y, player.x - mouse_pos_x);
+                var rotation = Math.atan2(player.y + player.height / 2 - mouse_pos_y, player.x + player.width / 2 - mouse_pos_x);
 
                 bulletVelX -= Math.cos(rotation) * this.bulletVel;
                 bulletVelY -= Math.sin(rotation) * this.bulletVel;
