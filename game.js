@@ -8,6 +8,7 @@ var gameObjects = [];
 var texts = [];
 var player;
 var enemySpawner;
+var mousePressed = false;
 
 function init() {
     canvas =  document.getElementById("gameCanvas");
@@ -40,9 +41,27 @@ function keyUpHandler(event) {
     keys.splice(keyIndex, 1);
 }
 
+document.onmousedown = function(e) {
+    mousePressed = true;
+};
+
+document.onmouseup = function(e) {
+    mousePressed = false;
+};
+
 let secondsPassed;
 let oldTimeStamp;
 let fps;
+let mouse_pos_x;
+let mouse_pos_y;
+
+function mouse_position(e)
+{
+    mouse_pos_x = e.screenX;
+    mouse_pos_y = e.screenY - 72;
+}
+
+
 function gameloop(timeStamp) {
     update();
     draw();
@@ -617,17 +636,11 @@ class Player extends GameObject{
             let bulletVelX = 0;
             let bulletVelY = 0;
 
-            if (keys.includes("ArrowUp")) {
-                bulletVelY = -this.bulletVel;
-            }
-            if (keys.includes("ArrowDown")) {
-                bulletVelY = this.bulletVel;
-            }
-            if (keys.includes("ArrowLeft")) {
-                bulletVelX = -this.bulletVel;
-            }
-            if (keys.includes("ArrowRight")) {
-                bulletVelX = this.bulletVel;
+            if (mousePressed) {
+                var rotation = Math.atan2(player.y - mouse_pos_y, player.x - mouse_pos_x);
+
+                bulletVelX -= Math.cos(rotation) * this.bulletVel;
+                bulletVelY -= Math.sin(rotation) * this.bulletVel;
             }
 
             if (bulletVelX != 0 || bulletVelY != 0) {
