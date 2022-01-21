@@ -422,12 +422,19 @@ class BasicEnemy extends Enemy {
     }
 
     move() {
-		if (player.x >= this.x)
-            this.x += this.velX;
+		if (player.x >= this.x) {
+            if (this.x + this.velX > player.x)
+                this.x = player.x;
+            else
+                this.x += this.velX;
+        }
         else
             this.x -= this.velX;
         if (player.y >= this.y)
-            this.y += this.velY;
+            if (this.y + this.velY > player.y)
+                this.y = player.y;
+            else
+                this.y += this.velY;
         else
             this.y -= this.velY;
 	}
