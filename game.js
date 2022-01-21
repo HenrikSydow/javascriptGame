@@ -318,7 +318,7 @@ class Enemy extends GameObject {
             if (gameObject instanceof Bullet) {
                 if (gameObject.hitbox.intersects(this.hitbox)) {
                     gameObjects.splice(gameObjects.indexOf(gameObject), 1);
-                    this.hp -= player.damage * 10;
+                    this.hp -= player.damage;
                 }
             }
         });
@@ -633,7 +633,7 @@ class Player extends GameObject{
         this.maxHp = 100;
         this.hpBar.width = 100;
         this.hp = 100;
-        this.damage = 1;
+        this.damage = 5;
         this.lvl = 1;
         this.exp = 0;
         this.nextLvlExp = 10;
