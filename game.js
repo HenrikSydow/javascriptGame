@@ -502,9 +502,20 @@ class Bullet extends GameObject {
         this.hitbox.y = this.y;
     }
 
+    drawTrail() {
+        ctx.globalAlpha = 0.25;
+        ctx.fillStyle = "yellow";
+        for (let i = 1; i <= 15; i++){
+            ctx.fillRect(this.x - this.velX * i, this.y - this.velY * i, this.width, this.height);
+            ctx.globalAlpha -= 0.05;
+        }
+        ctx.globalAlpha = 1;
+    }
+
     draw() {
         super.draw();
-        ctx.fillStyle = "yellow"
+        this.drawTrail();
+        ctx.fillStyle = "yellow";
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
@@ -654,6 +665,7 @@ class Player extends GameObject{
         }
 	}
 
+    
     levelUp() {
         this.lvl += 1;
         this.exp = this.exp - this.nextLvlExp;
