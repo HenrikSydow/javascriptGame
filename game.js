@@ -250,6 +250,10 @@ class HpBar extends GameObject {
         ctx.fillStyle = "#62d0f3";
         // exp:
         ctx.fillRect(this.x, this.y + 20, player.width * (this.exp / player.nextLvlExp), 8);
+        // hp text:
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = 'Bold 14px Arial';
+        ctx.fillText("Hp: " + this.hp + "/" + this.maxHp, this.x, this.y + this.height / 2);
     }
 }
 
@@ -614,7 +618,7 @@ class Player extends GameObject{
 		this.bulletVel = 10;
 		this.bulletCooldown = 750;
         this.hpBar = hpBar;
-        this.hpBar.hpColor = "#00FF00";
+        this.hpBar.hpColor = "#078709";
         this.maxHp = 100;
         this.hpBar.width = 100;
         this.hp = 100;
@@ -741,6 +745,5 @@ class Player extends GameObject{
         ctx.font = '14px Arial';
         ctx.fillText("Dmg: " + this.damage, this.x + 10, this.y + 55);
         ctx.fillText("Spd: " + this.velX, this.x + 10, this.y + 70);
-        ctx.fillText("Hp: " + this.hp + "/" + this.maxHp, this.x + 10, this.y + 85);
     }
 }
