@@ -262,7 +262,7 @@ class HpBar extends GameObject {
         // hp text:
         ctx.fillStyle = "#FFFFFF";
         ctx.font = 'Bold 14px Arial';
-        ctx.fillText("Hp: " + this.hp + "/" + this.maxHp, this.x, this.y + this.height / 2);
+        ctx.fillText("Hp: " + parseInt(this.hp) + "/" + this.maxHp, this.x, this.y + this.height / 2);
     }
 }
 
@@ -748,7 +748,7 @@ class Player extends GameObject{
             if (gameObject instanceof Enemy) {
                 if (gameObject.hitbox.intersects(this.hitbox)) {
                     if(this.hp > 0)
-                        this.hp -= 1;
+                        this.hp -= 1 * deltaTime / 25;
                         this.bulletCooldown = this.basicCooldown - this.lvl * 10;
                 }
             }
