@@ -58,7 +58,7 @@ let mouse_pos_y;
 function mouse_position(e)
 {
     mouse_pos_x = e.screenX;
-    mouse_pos_y = e.screenY - 72;
+    mouse_pos_y = e.screenY;
 }
 
 
@@ -679,9 +679,14 @@ class Player extends GameObject{
         this.height = 100;
         this.hitbox = new Hitbox(this.x, this.y, this.width, this.height);
         this.lastShot = 0;
+        this.reloadTime = 0;
     }
 	
 	shoot() {
+        this.reloadTime = Date.now() - this.lastShot;
+        if (this.reloadTime > this.bulletCooldown) {
+            this.reloadTime = this.bulletCooldown;
+        }
 		if (Date.now() - this.lastShot >= this.bulletCooldown) {
 			let bulletX = this.x + this.width / 2 - Bullet.size / 2;
 			let bulletY = this.y + this.height / 2 - Bullet.size / 2;
@@ -797,6 +802,10 @@ class Player extends GameObject{
         ctx.font = '14px Arial';
         ctx.fillText("Dmg: " + this.damage, this.x + 10, this.y + 55);
         ctx.fillText("Spd: " + this.velX, this.x + 10, this.y + 70);
-        ctx.fillText("CD: " + this.bulletCooldown, this.x + 10, this.y + 95);
+        ctx.fillText("CD: " + this.reloadTime, this.x + 10, this.y + 95);
+        // reload
+        var reloadt = (player.reloadTime / player.bulletCooldown) * player.width;
+        if (!(reloadt == player.width))
+        ctx.fillRect(this.x, this.y + 105, reloadt, 8);
     }
 }
