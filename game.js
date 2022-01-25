@@ -9,6 +9,9 @@ var texts = [];
 var player;
 var enemySpawner;
 var mousePressed = false;
+var lastTimeStamp;
+var deltaTime;
+var deltaTimeMovement;
 
 function init() {
     canvas =  document.getElementById("gameCanvas");
@@ -27,6 +30,7 @@ function init() {
 
     enemySpawner = new EnemySpawner();
 
+    lastTimeStamp = Date.now();
     window.requestAnimationFrame(gameloop);
 }
 
@@ -79,6 +83,11 @@ function gameloop(timeStamp) {
 }
 
 function update() {
+    deltaTime = Date.now() - lastTimeStamp;
+    console.log("delta time: " + deltaTime);
+    lastTimeStamp = Date.now();
+    deltaTimeMovement = deltaTime * 0.08;
+    console.log("deltaMovement: " + deltaTimeMovement)
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
     gameObjects.forEach(gameObject => gameObject.update());
@@ -381,8 +390,8 @@ class Enemy extends GameObject {
     }
 
     move() {
-        this.x += this.velX;
-        this.y += this.velY;
+        this.x += this.velX * deltaTimeMovement;
+        this.y += this.velY * deltaTimeMovement;
     }
 
     explode() {
@@ -423,20 +432,20 @@ class BasicEnemy extends Enemy {
 
     move() {
 		if (player.x >= this.x) {
-            if (this.x + this.velX > player.x)
+            if (this.x + this.velX * deltaTimeMovement > player.x)
                 this.x = player.x;
             else
-                this.x += this.velX;
+                this.x += this.velX * deltaTimeMovement;
         }
         else
-            this.x -= this.velX;
+            this.x -= this.velX * deltaTimeMovement;
         if (player.y >= this.y)
-            if (this.y + this.velY > player.y)
+            if (this.y + this.velY * deltaTimeMovement > player.y)
                 this.y = player.y;
             else
-                this.y += this.velY;
+                this.y += this.velY * deltaTimeMovement;
         else
-            this.y -= this.velY;
+            this.y -= this.velY * deltaTimeMovement;
 	}
 
     draw() {
@@ -532,8 +541,8 @@ class Bullet extends GameObject {
     update() {
         super.update();
 
-        this.x += this.velX;
-        this.y += this.velY;
+        this.x += this.velX * deltaTimeMovement;
+        this.y += this.velY * deltaTimeMovement;
 
         this.hitbox.x = this.x;
         this.hitbox.y = this.y;
@@ -565,8 +574,8 @@ class Particle extends GameObject {
     }
 
     update() {
-        this.x += this.velX;
-        this.y += this.velY;
+        this.x += this.velX * deltaTimeMovement;
+        this.y += this.velY * deltaTimeMovement;
     }
 
     draw() {
@@ -627,9 +636,9 @@ class ExpParticle extends GameObject {
         this.velX = this.velY = Math.pow(300 / vLen, 2);
 
         if (this.x < player.x + player.width / 2)
-            this.x += this.velX;
+            this.x += this.velX * deltaTimeMovement;
         else if (this.x > player.x + player.width / 2)
-            this.x -= this.velX;
+            this.x -= this.velX * deltaTimeMovement;
 
         if (this.y < player.y + player.height / 2)
             this.y += this.velY;
@@ -750,16 +759,16 @@ class Player extends GameObject{
         });
 
         if (lower.includes("w")) {
-            this.y -= this.velY;
+            this.y -= this.velY * deltaTimeMovement;
         }
         if (lower.includes("a")) {
-            this.x -= this.velX;
+            this.x -= this.velX * deltaTimeMovement;
         }
         if (lower.includes("s")) {
-            this.y += this.velY;
+            this.y += this.velY * deltaTimeMovement;
         }
         if (lower.includes("d")) {
-            this.x += this.velX;
+            this.x += this.velX * deltaTimeMovement;
         }
 
         // avoid going out of bounds:
