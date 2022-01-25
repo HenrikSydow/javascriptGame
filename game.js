@@ -58,7 +58,7 @@ let mouse_pos_y;
 function mouse_position(e)
 {
     mouse_pos_x = e.screenX;
-    mouse_pos_y = e.screenY;
+    mouse_pos_y = e.screenY - 72;
 }
 
 
